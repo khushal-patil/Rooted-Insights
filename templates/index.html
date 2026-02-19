@@ -1,0 +1,181 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HackWrite | TryHackMe Walkthroughs</title>
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      border-radius: 20px;
+    }
+
+    .card {
+      border-radius: 15px;
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .navbar {
+      background-color: #111827;
+    }
+
+    .navbar a {
+      color: white !important;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+    }
+
+    footer {
+      background: #111827;
+      color: white;
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">🛡️ HackWrite</a>
+
+    <div class="ms-auto">
+
+      <form method="GET" class="d-inline me-3">
+        <input type="text" name="search"
+               placeholder="Search room..."
+               class="form-control d-inline"
+               style="width:200px; display:inline-block;">
+      </form>
+
+      {% if user.is_authenticated %}
+        <span class="me-2 text-light">Hello, {{ user.username }}</span>
+        <a href="{% url 'create_article' %}" class="btn btn-success btn-sm me-2">
+          Write
+        </a>
+        <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">
+          Logout
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">
+          Login
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+</nav>
+
+
+<div class="container mt-4">
+
+  <!-- HERO -->
+  <div class="hero-section p-5 shadow mb-5">
+    <h1 class="display-5 fw-bold">Share Your TryHackMe Walkthroughs</h1>
+    <p class="col-md-8 fs-5">
+      A community-driven cybersecurity blog where ethical hackers
+      share room solutions, methodologies, and research insights.
+    </p>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'create_article' %}" class="btn btn-light btn-lg">
+        Start Writing 🚀
+      </a>
+    {% endif %}
+  </div>
+
+
+  <!-- FILTER BUTTONS -->
+  <div class="text-center mb-4">
+    <a href="?difficulty=easy" class="btn btn-outline-success me-2">Easy</a>
+    <a href="?difficulty=medium" class="btn btn-outline-warning me-2">Medium</a>
+    <a href="?difficulty=hard" class="btn btn-outline-danger">Hard</a>
+    <a href="/" class="btn btn-outline-secondary ms-2">Reset</a>
+  </div>
+
+
+  <!-- ARTICLES GRID -->
+  
+  <div class="row">
+
+    {% for article in articles %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card mb-4 shadow-sm">
+
+          <div class="card-body">
+
+            <h5 class="card-title">
+              <a href="{% url 'article_detail' article.slug %}"
+                 class="text-decoration-none text-dark">
+                 {{ article.title }}
+              </a>
+            </h5>
+
+            <p class="text-muted small">
+              Room: {{ article.room_name }}
+            </p>
+
+            <p class="text-muted small">
+              By {{ article.author.username }}
+              • {{ article.created_at|date:"M d, Y" }}
+            </p>
+
+            <!-- Difficulty Badge -->
+            {% if article.difficulty == "easy" %}
+              <span class="badge bg-success">Easy</span>
+            {% elif article.difficulty == "medium" %}
+              <span class="badge bg-warning text-dark">Medium</span>
+            {% else %}
+              <span class="badge bg-danger">Hard</span>
+            {% endif %}
+
+            <div class="mt-3">
+              <a href="{% url 'article_detail' article.slug %}"
+                 class="btn btn-sm btn-dark">
+                 Read More →
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    {% empty %}
+      <div class="text-center">
+        <h4>No walkthroughs yet.</h4>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 RootedInsights</p>
+</footer>
+
+</body>
+</html>

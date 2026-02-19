@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | HackWrite</title>
+
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .login-card {
+      background: #111827;
+      color: white;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .login-card h3 {
+      font-weight: 600;
+    }
+
+    .form-control {
+      background-color: #1f2937;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .form-control:focus {
+      background-color: #1f2937;
+      color: white;
+      box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-hack {
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .btn-hack:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+
+    a {
+      color: #22c55e;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .icon {
+      font-size: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card text-center">
+
+    <div class="icon mb-3">🛡️</div>
+    <div class="brand-title mb-2">HackWrite</div>
+    <p class="text-light mb-4">Login to continue your HackWrite journey</p>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+    <form method="POST">
+      {% csrf_token %}
+
+
+      <div class="mb-3 text-start">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+      </div>
+
+      <div class="mb-4 text-start">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-hack w-100 text-white">
+        🔐 Secure Login
+      </button>
+    </form>
+
+    <div class="mt-4">
+      <small>
+        Don’t have an account?
+        <a href="{% url 'register' %}">Create one</a>
+      </small>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
